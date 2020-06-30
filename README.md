@@ -1,13 +1,11 @@
 # Eats-vue
 A private project for take-out, which is an application based on javascript, vue, vant, demos are followed:
 =======
-<img src="https://github.com/joyxu96/Eats-vue/tree/master/demos/demo1.gif" alt="demo1" style="zoom:67%;" />
+![demo1](https://github.com/joyxu96/Eats-vue/tree/master/demos/demo1.gif)
 
-<img src="https://github.com/joyxu96/Eats-vue/tree/master/demos/demo2.gif" alt="demo2" style="zoom:67%;" />
+![demo2](https://github.com/joyxu96/Eats-vue/tree/master/demos/demo2.gif)
 
-
-
-<img src="https://github.com/joyxu96/Eats-vue/tree/master/demos/demo3.gif" alt="demo3" style="zoom:67%;" />
+![demo3](https://github.com/joyxu96/Eats-vue/tree/master/demos/demo3.gif)
 
 
 
