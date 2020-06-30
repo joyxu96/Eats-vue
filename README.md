@@ -2,7 +2,7 @@
 A private project for take-out, which is an application based on javascript, vue, vant, demos are followed:
 =======
 <p align="center">
-  <zoom = 67% src="https://github.com/joyxu96/Eats-vue/blob/master/demos/demo1.gif">
+  <img src="https://github.com/joyxu96/Eats-vue/blob/master/demos/demo1.gif" alt="demo1" style="zoom:67%;"/>
 </p>
   
 ![image](https://github.com/joyxu96/Eats-vue/blob/master/demos/demo1.gif)
