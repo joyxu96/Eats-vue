@@ -2,6 +2,16 @@
 import Vue from 'vue'
 import App from './App';
 import router from "./router";/*从router文件夹的index中获取router*/
+import store from "./store";
+import './mock/mockServer';
+import VueLazyload from 'vue-lazyload';
+import loading from './common/imgs/loading.jpg'
+Vue.use(VueLazyload,{
+  loading: loading,
+})
+import './filters'
+
+//按需引入ui组件
 import { Icon } from 'vant';
 Vue.use(Icon);/*FooterGuide中使用的底部导航图标*/
 import { Grid, GridItem } from 'vant';
@@ -28,6 +38,15 @@ Vue.use(Cell);
 Vue.use(CellGroup);/*单元格*/
 import { Switch } from 'vant';
 Vue.use(Switch);/*switch开关*/
+import { Popup } from 'vant';
+Vue.use(Popup);/*Popup 弹出层*/
+import { Divider } from 'vant';
+Vue.use(Divider);/*Divider 分割线*/
+import { Sidebar, SidebarItem } from 'vant';
+Vue.use(Sidebar);
+Vue.use(SidebarItem);/*Sidebar 侧边导航*/
+import { Stepper } from 'vant';
+Vue.use(Stepper);/*Stepper 步进器*/
 /*const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
@@ -37,6 +56,7 @@ VueRouter.prototype.push = function push(location) {
 new Vue({
   el : '#app',
   render: h => h(App),
-  router
+  router,
+  store,
 })
 

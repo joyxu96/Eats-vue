@@ -4,18 +4,20 @@
     <div class="loginBox">
       <div class="loginNow">
         <div class="loginLeft">
-          <router-link to="/login">
+          <router-link :to="userinfo._id?'/userinfo':'/login'">
             <div class="headPortrait">
-              <van-icon name="manager-o" size="50" color="#F19483" />
+              <van-icon name="user-o" size="50" color="#F19483" v-if="userinfo._id"/>
+              <van-icon name="manager-o" size="50" color="#F19483" v-else/>
             </div>
             <div class="loginText">
-              <span>立即登陆</span>
-              <p>再忙也要好好吃饭~</p>
+              <span>{{(userinfo.phone || userinfo.name) || "立即登陆"}}</span>
+              <p>{{userinfo._id?"填饱了肚子，人就不会空虚~":"再忙也要好好吃饭~"}}</p>
             </div>
           </router-link>
         </div>
-        <div class="loginRight">
-          <van-icon class="setting" name="setting-o"  size="25"/>
+        <div class="loginRight" v-if="userinfo._id">
+          <van-icon class="setting" name="setting-o"  size="25" @click="setting=!setting"/>
+          <button class="quit" v-show="setting" type="button" @click="logout">退出登陆</button>
         </div>
       </div>
       <div class="bagCenter">
@@ -90,11 +92,38 @@
 
 <script>
   import HeaderGuide from '../../components/HeaderGuide/HeaderGuide.vue';
+  import {mapState} from 'vuex';
+  import { Dialog } from 'vant';
+  import { Toast } from 'vant';
   export default {
     name: "Person",
     components:{
       HeaderGuide
-    }
+    },
+    data() {
+      return {
+        setting: false,
+      }
+    },
+    computed:{
+      ...mapState(['userinfo']),
+    },
+    methods: {
+      logout() {
+        Dialog.confirm({
+          title: '确认退出登陆吗？',
+          // message: '确认退出登陆吗？',
+        })
+          .then(() => {
+            this.$store.dispatch("userLogOut");
+            Toast.success('退出成功');
+          })
+          .catch(() => {
+            //退出
+          });
+
+      }
+    },
   }
 </script>
 
@@ -127,10 +156,24 @@
             font-size 10px
             color gray
       .loginRight
-        float: right;
+        position absolute
+        width 150px
+        height 72px
+        right 0
         .setting
           padding 10px
           float right
+        .quit
+          position absolute
+          margin 5px
+          padding 8px 40px
+          bottom 0
+          right 0
+          background #B55D4C
+          font-size 15px
+          color #fff
+          border 0
+          border-radius 5px
     .bagCenter
       position absolute
       left 5%
@@ -220,10 +263,4 @@
           .functions
             color #F19483
             width 100%
-
-
-
-
-
-
 </style>

@@ -7,10 +7,17 @@
 
 <script>
   import FooterGuide from './components/FooterGuide/FooterGuide.vue';
+  import {mapState} from 'vuex';
   export default {
     name: "App",
     components:{
       FooterGuide
+    },
+    computed: {
+      ...mapState(["userinfo"]),
+    },
+    mounted() {
+      this.$store.dispatch("getUserInfo");
     }
   }
 </script>

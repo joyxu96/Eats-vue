@@ -1,5 +1,5 @@
 <template>
-  <div class="footer_guide border-1px">
+  <div class="footerGuide border-1px">
     <GuideItem v-for="(guideItem,index) in guides" :key="index" :guideItem="guideItem"></GuideItem>
   </div>
 </template>
@@ -21,7 +21,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
-  .footer_guide  //footer
+  .footerGuide  //footer
     top-border-1px(#F19483)
     position fixed
     z-index 500

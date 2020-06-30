@@ -1,9 +1,12 @@
 <template>
   <div>
     <!--头部-->
-    <HeaderGuide title="华东理工大学（徐汇校区）">
-      <van-icon name="search" size="25" color="#39a8b0" class="headerSearch" slot="signal"/>
-      <router-link to="/login" class="headerLogin" slot="login">登录|注册</router-link>
+    <HeaderGuide :title="`${address.city}${address.name}`" v-if="address.name">
+      <van-icon name="search" size="25" color="#39a8b0" class="headerSearch" slot="signal" @click="$router.push('/search')"/>
+      <router-link slot="login" :to="userinfo._id?'/userinfo':'/login'" class="headerLogin">
+        <span v-if="!userinfo._id">登录|注册</span>
+        <van-icon name="user-o" v-else/>
+      </router-link>
     </HeaderGuide>
     <!--首页导航-->
     <div class="home">
@@ -14,10 +17,16 @@
             <van-swipe-item>
               <!--flex8宫格-->
               <div class="navs">
-                <van-grid square :border="false" :column-num="4">
-                  <van-grid-item v-for="nav in navs1" :key="nav.img*1">
-                    <van-image width="50px" square :src="require(`../../pages/Home/images/nav/${nav.img}.png`)"  />
-                    <span>Joy{{nav.img}}</span>
+                <van-grid square :border="false" :column-num="4" v-if="categorysArr.length">
+                  <van-grid-item v-for="(nav,index) in categorysArr[0]" :key="index">
+                    <van-image width="50px" square :src="`${swipeImgUrl}${nav.image_url}`"  />
+                    <span>{{nav.title}}</span>
+                  </van-grid-item>
+                </van-grid>
+                <van-grid square :border="false" :column-num="4" v-else>
+                  <van-grid-item v-for="item in 8" :key="item">
+                    <van-image height="50px" square :src="require(`./images/alt/shop_back.svg`)"  />
+                    <span></span>
                   </van-grid-item>
                 </van-grid>
               </div>
@@ -25,9 +34,9 @@
             <van-swipe-item>
               <div class="navs">
                 <van-grid square :border="false" :column-num="4">
-                  <van-grid-item v-for="nav in navs2" :key="nav.img*1">
-                    <van-image width="50px" square :src="require(`../../pages/Home/images/nav/${nav.img}.png`)"  />
-                    <span>Joy{{nav.img}}</span>
+                  <van-grid-item v-for="(nav,index) in categorysArr[1]" :key="index">
+                    <van-image width="50px" square :src="`${swipeImgUrl}${nav.image_url}`"  />
+                    <span>{{nav.title}}</span>
                   </van-grid-item>
                 </van-grid>
               </div>
@@ -77,50 +86,58 @@
         </div>
       </div>
       <!--首页附近商家-->
-      <div class="listBox">
+      <div class="listBox" @click="$router.push('/shop')">
         <div class="listHeader">
           <van-icon name="ellipsis" class="listHeaderSignal"/>
           <span class="listHeaderTitle">附近商家</span>
         </div>
-        <div class="shopBox" v-for="(shop,index) in shopLists" :key="index">
+        <div v-if="shops.length">
+          <div class="shopBox" v-for="(shop,index) in shops" :key="index">
+            <ul class="listShops">
+              <li class="listShop border-1px">
+                <div class="boxContainer">
+                  <div class="shopLeft">
+                    <img :src="require(`./images/shop/1.png`)">
+                    <!--<img :src=`${listImgUrl}${shop.image_path}`>-->
+                  </div>
+                  <div class="shopRight">
+                    <h4 class="shopTitle ellipsis">{{shop.name}}</h4>
+                    <van-icon class="like" name="like-o" />
+                    <span class="timeDistance">{{parseInt(shop.order_lead_time)}}h/{{parseInt(shop.distance)}}km</span>
+                    <div class="mask" @click.prevent=discountAppear(index)></div>
+                    <div class="appear">
+                      <van-icon style="display: block" class="down" size="10" name="arrow-down" />
+                      <van-icon style="display: none" class="up" size="10" name="arrow-up" />
+                    </div>
+                    <div class="shopRate">
+                      <div class="shopAll">
+                        <span class="rateStar"><van-rate :size="15" v-model="shop.rating" readonly/></span>
+                        <span class="rateScore">{{shop.rating}}分</span>
+                        <span class="orderScore">月售{{shop.recent_order_num}}单</span>
+                      </div>
+                    </div>
+                    <div class="shopNorm">
+                      <span>¥{{shop.float_minimum_order_amount}}起送</span>
+                      <span class="segmentation">/</span>
+                      <span>{{shop.piecewise_agent_fee.tips}}</span>
+                    </div>
+                    <div class="discount">
+                      <div class="discountBox" style="height: 22px">
+                        <van-tag class="discountItem" color="#f2826a" plain v-for="(support,index) in shop.supports" :key="index">
+                          {{support.description}}
+                        </van-tag>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div v-else>
           <ul class="listShops">
-            <li class="listShop border-1px">
-              <div class="boxContainer">
-                <div class="shopLeft">
-                  <img :src="require(`./images/shop/${index+1}.png`)">
-                </div>
-                <div class="shopRight">
-                  <h4 class="shopTitle ellipsis">{{shop.name}}</h4>
-                  <van-icon class="like" name="like-o" />
-                  <span class="timeDistance">{{shop.min}}分钟 {{shop.distance}}km</span>
-                  <div class="appear" @click=discountAppear(shop)>
-                    <van-icon v-show="shop.appear" class="down" size="10" name="arrow-down" />
-                    <van-icon v-show="!shop.appear" class="up" size="10" name="arrow-up" />
-                  </div>
-                  <div class="shopRate">
-                    <div class="shopAll">
-                      <span class="rateStar"><van-rate :size="15" v-model="shop.comment" /></span>
-                      <span class="rateScore">{{shop.comment}}分</span>
-                      <span class="orderScore">月售{{shop.num}}单</span>
-                    </div>
-                  </div>
-                  <div class="shopNorm">
-                    <span>¥{{shop.servePrice}}起送</span>
-                    <span class="segmentation">/</span>
-                    <span>配送费约¥{{shop.tip}}</span>
-                  </div>
-                  <div class="discount">
-                    <div class="discountBox" :style="{height: shop.upDownHeight}">
-                      <van-tag class="discountItem" color="#f2826a" plain>28减17</van-tag>
-                      <van-tag class="discountItem" color="#f2826a" plain>45减25</van-tag>
-                      <van-tag class="discountItem" color="#f2826a" plain>60减33</van-tag>
-                      <van-tag class="discountItem" color="#f2826a" plain>80减40</van-tag>
-                      <van-tag class="discountItem" color="#f2826a" plain>100减46</van-tag>
-                      <van-tag class="discountItem" color="#f2826a" plain>品质联盟</van-tag>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <li v-for="item in 6" class="listShop border-1px" :key="item">
+              <img :src="require(`./images/alt/shop_back.svg`)">
             </li>
           </ul>
         </div>
@@ -134,29 +151,67 @@
 
 <script>
   import HeaderGuide from '../../components/HeaderGuide/HeaderGuide.vue';
+  import {mapState,mapActions} from 'vuex';
   export default {
     name: "Home",
     data() {
       return {
-        navs1: [{img:"01"},{img:"02"},{img:"03"},{img:"04"},{img:"05"},{img:"06"},{img:"07"},{img:"08"}],
-        navs2: [{img:"09"},{img:"10"},{img:"11"},{img:"12"},{img:"13"},{img:"14"},{img:"15"},{img:"16"}],
-        shopLists:[
-          {name:"JoyShop01",comment:3.5,servePrice:20,tip:5,num:119,min:33,distance:3.3,appear:true,upDownHeight:"22px"},
-          {name:"JoyShop02",comment:4.2,servePrice:15,tip:2.8,num:402,min:20,distance:2.5,appear:true,upDownHeight:"22px"},
-          {name:"JoyShop03JoyShop03JoyShop03JoyShop03JoyShop03",comment:4.5,servePrice:20,tip:3,num:678,min:15,distance:3.5,appear:true,upDownHeight:"22px"},
-          {name:"JoyShop04",comment:3.8,servePrice:20,tip:6,num:206,min:36,distance:4,appear:true,upDownHeight:"22px"},
-          {name:"JoyShop05",comment:4.8,servePrice:15,tip:4,num:106,min:40,distance:1.6,appear:true,upDownHeight:"22px"},
-        ]
+        swipeImgUrl: "https://fuss10.elemecdn.com",
+        listImgUrl: 'http://cangdu.org:8001/img/',
+        shopsAppear:[],
       }
     },
     methods: {
-      discountAppear(shop) {
-        shop.appear=!shop.appear;
-        shop.upDownHeight=shop.appear?"22px":"";
-      }
+      discountAppear(index,event) {
+        event = event || window.event;
+        event.cancelBubble = true;/*不冒泡*/
+        const appear=!this.shopsAppear[index].appear;
+        this.shopsAppear.splice(index,1,{appear});
+        const appearIcon = event.target.nextElementSibling;
+        const discountIcon = event.target.parentNode.lastElementChild.getElementsByClassName('discountBox')[0];
+        if(appear){
+          appearIcon.getElementsByClassName('down')[0].style.display = "block";
+          appearIcon.getElementsByClassName('up')[0].style.display = "none";
+          discountIcon.style.height = '22px';
+        } else {
+          appearIcon.getElementsByClassName('up')[0].style.display = "block";
+          appearIcon.getElementsByClassName('down')[0].style.display = "none";
+          discountIcon.style.height = '';
+        };
+      },
     },
     components:{
       HeaderGuide,
+    },
+    computed: {
+      ...mapState(['address',"categorys","shops","userinfo"]),
+      categorysArr () {
+        const num = 8;/*一张轮播图的小图个数*/
+        const arr = [];
+        let arrInner = [];
+        this.categorys.forEach((value,index) => {
+          arrInner.push(value);
+          if((index+1)%num == 0){
+            arr.push(arrInner);
+            arrInner = [];
+          }
+        })
+        return arr
+      },
+    },
+    mounted() {
+      this.$store.dispatch('getAddress');
+      this.$store.dispatch('getFoodCategorys');
+      this.$store.dispatch('getShops');
+    },
+    watch:{
+      shops() {/*一旦shops有数据，在异步更新数据之前执行*/
+        let shopsAppearInner = {};
+        for (let i = 0; i < this.shops.length; i++) {
+          shopsAppearInner.appear = true;
+          this.shopsAppear.push(shopsAppearInner)
+        }
+      }
     }
   }
 </script>
@@ -266,7 +321,15 @@
                   float right
                 .timeDistance
                   float right
+                  line-height 20px
                   font-size 12px
+                .mask
+                  position absolute
+                  top 69px
+                  right 5px
+                  width 15px
+                  height 15px
+                  z-index 10
                 .appear
                   position absolute
                   top 72px

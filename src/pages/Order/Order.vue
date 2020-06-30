@@ -2,7 +2,7 @@
   <div>
     <HeaderGuide title="订单列表"></HeaderGuide>
     <div class="order">
-      <div class="pic">
+      <div class="pic" v-if="!userinfo._id">
         <van-icon name="smile-o" size="200" color="#F19483"/>
         <p>登录后查看外卖订单</p>
         <router-link to="/login">
@@ -15,11 +15,15 @@
 
 <script>
   import HeaderGuide from '../../components/HeaderGuide/HeaderGuide.vue';
+  import {mapState} from "vuex"
   export default {
     name: "Order",
     components:{
       HeaderGuide
-    }
+    },
+    computed: {
+      ...mapState(['userinfo'])
+    },
   }
 </script>
 

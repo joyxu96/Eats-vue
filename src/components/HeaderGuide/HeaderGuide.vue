@@ -42,10 +42,12 @@
       font-size 20px
       color #fff
     .headerLogin
-      font 15px verdana
       color #fff
       position absolute
       right 15px
       top 50%
       transform translateY(-50%)/*同“search”一个css样式*/
+      span
+        color #fff
+        font 15px verdana
 </style>
