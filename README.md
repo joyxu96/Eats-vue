@@ -5,11 +5,15 @@ A private project for take-out, which is an application based on javascript, vue
   <img src="https://github.com/joyxu96/Eats-vue/blob/master/demos/demo1.gif" alt="demo1" style="zoom:67%;"/>
 </p>
   
-![image](https://github.com/joyxu96/Eats-vue/blob/master/demos/demo1.gif)
+<p align="center">
+  <img src="https://github.com/joyxu96/Eats-vue/blob/master/demos/demo2.gif" alt="demo2" style="zoom:67%;"/>
+</p>
 
-![imgae](https://github.com/joyxu96/Eats-vue/blob/master/demos/demo2.gif)
+<p align="center">
+  <img src="https://github.com/joyxu96/Eats-vue/blob/master/demos/demo3.gif" alt="demo3" style="zoom:67%;"/>
+</p>
 
-![image](https://github.com/joyxu96/Eats-vue/blob/master/demos/demo3.gif)
+
 
 
 
