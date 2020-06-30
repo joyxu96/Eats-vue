@@ -23,7 +23,7 @@ A private project for take-out, which is an application based on javascript, vue
 > - login / logout
 > - vant
 > - splitting codes via router
-> - 
+>
 >
 > 
 >
