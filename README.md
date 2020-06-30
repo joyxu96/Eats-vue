@@ -1,10 +1,27 @@
-<<<<<<< HEAD
 # Eats-vue
-An app for take-out/eats, which is  a platform based on javascript, vue, vant
+A private project for take-out, which is an application based on javascript, vue, vant, demos are followed:
 =======
-# gshop-takeout
+<img src="E:\Eats-vue\demos\demo1.gif" alt="demo1" style="zoom:67%;" />
 
-> A Vue.js project
+<img src="E:\Eats-vue\demos\demo2.gif" alt="demo2" style="zoom:67%;" />
+
+
+
+<img src="E:\Eats-vue\demos\demo3.gif" alt="demo3" style="zoom:67%;" />
+
+
+
+> Features:
+>
+> - client & server interactions are implemented by npm and mongodb
+> - login / logout
+> - vant
+> - splitting codes via router
+> - 
+>
+> 
+>
+> 
 
 ## Build Setup
 
@@ -21,6 +38,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
->>>>>>> 6b1ac98... init gshop
